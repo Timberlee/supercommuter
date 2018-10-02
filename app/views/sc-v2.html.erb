@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <%# <link rel="stylesheet" href="leaflet/leaflet.css"> %>
+  <link rel='stylesheet' type='text/css' href='sc-v2.css'>
+
+  <title>Supercommuter Version 1.0</title>
+</head>
+<body>
+  <h1>Supercommuter Version 1.0</h1>
+  <div id='map'></div><!-- need to give height to the mapDiv-->
+  <button onclick='getStationData()'>Get Station Data</button>
+  <button onclick='getStationData2()'>Get Station Data 2</button>
+  <button onclick='getTrains()'>Get Trains</button>
+
+  <div id='displayStationData'></div>
+<%# <script src='leaflet/leaflet.js'></script> %>
+<script>
+var mapVar = L.map('map');//.setView([39.75621, -104.99404], 13);
+// mapVar.locate({setView: true, maxZoom: 16});
+// See config/initializers/leaflet.rb for adding the tile layers
+// Adds base layer - only one of these can be visible at a time
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap,</a> <a href="https://www.thunderforest.com">Thunderforest</a> | contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiZXJhdG9zdGhlbmVleiIsImEiOiJjam1nbGI4cDcwMGI2M3Fyem96MjFtMzBkIn0.Hoz2fR0h8ty9dDXbKGk8jQ'
+}).addTo(mapVar);</script>
+</body>
+</html>
