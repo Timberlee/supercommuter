@@ -1,48 +1,65 @@
-// Can also put this file in /public
-// Initializes map
-var mapVar = L.map('map');//.setView([39.75621, -104.99404], 13);
-// mapVar.locate({setView: true, maxZoom: 16});
-/* See config/initializers/leaflet.rb for adding the tile layers
+var map = L.map('map');
+var marker = L.marker([40.75, -73.96]).addTo(map);
+/*var map = L.map('map');//.setView([39.75621, -104.99404], 13);
+map.locate({setView: true, maxZoom: 16});
+// See config/initializers/leaflet.rb for adding the tile layers
 // Adds base layer - only one of these can be visible at a time
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap,</a> <a href="https://www.thunderforest.com">Thunderforest</a> | contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox.streets',
     accessToken: 'pk.eyJ1IjoiZXJhdG9zdGhlbmVleiIsImEiOiJjam1nbGI4cDcwMGI2M3Fyem96MjFtMzBkIn0.Hoz2fR0h8ty9dDXbKGk8jQ'
-}).addTo(mapVar);
+}).addTo(map);
+
 */
-id: 'mapbox.streets',
+
+
+// Can also put this file in /public
+// Initializes map
+/*
+var map = L.map('map');//.setView([39.75621, -104.99404], 13);
+map.locate({setView: true, maxZoom: 16});
+// See config/initializers/leaflet.rb for adding the tile layers
+// Adds base layer - only one of these can be visible at a time
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap,</a> <a href="https://www.thunderforest.com">Thunderforest</a> | contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'pk.eyJ1IjoiZXJhdG9zdGhlbmVleiIsImEiOiJjam1nbGI4cDcwMGI2M3Fyem96MjFtMzBkIn0.Hoz2fR0h8ty9dDXbKGk8jQ'
+}).addTo(map);
+*/
+//id: 'mapbox.streets',
 // Adds transport layer, can skip some of the params specified by more than one layer
-L.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=c4376cecf08a434d999c0bb08bc4c1fd').addTo(mapVar);
-//alternately, var x = L.tileLayer(params); mapVar.addLayer(x);
+//L.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=c4376cecf08a434d999c0bb08bc4c1fd').addTo(map);
+//alternately, var x = L.tileLayer(params); map.addLayer(x);
 function onLocationFound(e) {
     var radius = e.accuracy / 12;
     //L.marker(e.latlng).addTo(map)
     //    .bindPopup("You are within " + radius + " meters from this point").openPopup();
-    L.circle(e.latlng, radius).addTo(mapVar);
+    L.circle(e.latlng, radius).addTo(map);
 }
-mapVar.on('locationfound', onLocationFound);
+map.on('locationfound', onLocationFound);
 
 function onLocationError(e) {
     alert(e.message);
 }
-mapVar.on('locationerror', onLocationError);
+map.on('locationerror', onLocationError);
 
 var coordPopup = L.popup();
 function onMapClick(e) {
   coordPopup
     .setLatLng(e.latlng)
     .setContent("You clicked the map  " + e.latlng.toString())
-    .openOn(mapVar);
+    .openOn(map);
 }
-mapVar.on('click', onMapClick);
+map.on('click', onMapClick);
 
 //Set the boundaries of the displayed map
-mapVar.fitBounds([
+map.fitBounds([
     [40.893715, -73.733368],
     [40.546018, -74.056091]
 ]); //set the zoom integer multiple by less than 1 for ideal bounding around NYC
-//Alternately, mapVar.fitBounds(array-of-coordinates.getBounds());
+//Alternately, map.fitBounds(array-of-coordinates.getBounds());
 
 //Custom Icon
 var metroIcon = L.icon({
@@ -51,7 +68,38 @@ var metroIcon = L.icon({
     // iconAnchor: [22, 94],
     // popupAnchor: [-3, -76],
 });
-L.marker([40.66, -73.97], {icon: metroIcon}).addTo(mapVar);
+L.marker([40.66, -73.97], {icon: metroIcon}).addTo(map);
+
+var shuttleArray = [
+  [ 40.75276866674217,
+    -73.97918899989101
+  ],
+  [
+    -73.95762400074634,
+    40.67477166685263
+  ],
+  [
+    -73.98622899953202,
+    40.755983000570076
+  ],
+  [
+    -73.95924499945693,
+    40.670342666584396
+  ],
+  [
+    -73.95582700110425,
+    40.68059566598263
+  ]
+]
+function drawShuttles(){
+  var shuttleRoutes = L.polyline([ 40.75276866674217,
+    -73.97918899989101
+  ],
+  [
+    -73.95762400074634,
+    40.67477166685263
+  ], {color: 'grey'}).addTo(map);
+}
 
 var stationData = '';
 function getStationData() {
@@ -69,6 +117,7 @@ function getStationData() {
   xhttp.send();
 }
 //Function to gather stations by line from the json file
+//Note: if you're not on a server, the console will throw a 'malformed' error. ignore.
 var stationData2 = '';
 var stationArray2 = [];
 function getStationData2(){
@@ -77,7 +126,7 @@ function getStationData2(){
     if (this.readyState == 4 && this.status == 200) {
       stationData2 = JSON.parse(this.responseText);
       for(var i = 0; i < stationData2.features.length; i++){
-        if (stationData2.features[i]['properties']['line'].includes(7)){
+        if (stationData2.features[i]['properties']['line'].includes(2)){
           //Per ML may need to rewrite the entire expression here to include conditional operators (an or statement) rather than put the || within the .includes()
           //May have to delve into regular expressions here
           console.log(stationData2.features[i]['properties']['name']
@@ -88,9 +137,9 @@ function getStationData2(){
           var lat = stationData2.features[i]['geometry']['coordinates'][1];
           //need to play around with leaflet's #geojson-coordstolatlng
           stationArray2.push([lat,long]);
-          var stationMarker = L.marker([lat, long], {icon: metroIcon}).addTo(mapVar);
+          var stationMarker = L.marker([lat, long], {icon: metroIcon}).addTo(map);
           stationMarker.bindTooltip(stationData2.features[i]['properties']['name']).openTooltip();
-          // L.marker([lat, long]).addTo(mapVar);
+          // L.marker([lat, long]).addTo(map);
           console.log(stationArray2);
           // stationArray2.push(stationData2.features[i]['geometry']['coordinates'][0]);
         //Would probably be best to use Ruby to make subway line arrays in their own vars/files
@@ -98,8 +147,8 @@ function getStationData2(){
         }
       }
 
-      var sevenTrainRoute2 = L.polyline(stationArray2, {color: 'purple'}).addTo(mapVar);
-      //2018.9.26 23:44 for right now, let's .addTo(mapVar) the lines and make them clickable for the current timetable
+      // var sevenTrainRoute2 = L.polyline(stationArray2, {color: 'purple'}).addTo(map);
+      //2018.9.26 23:44 for right now, let's .addTo(map) the lines and make them clickable for the current timetable
     } // Definitely want live API calls for the train times since those change in real time
   };
   xhttp.open("GET", "Subway_Stations-2.geojson.json", true);
@@ -121,11 +170,11 @@ function getTrains(){
           var long = trainData.features[i]['geometry']['coordinates'][0];
           var lat = trainData.features[i]['geometry']['coordinates'][1];
           trainArray.push([lat,long]);
-          var stationMarker = L.marker([lat, long], {icon: metroIcon}).addTo(mapVar);
+          var stationMarker = L.marker([lat, long], {icon: metroIcon}).addTo(map);
           stationMarker.bindTooltip(trainData.features[i]['properties']['name']).openTooltip();
         }
       }
-      var trainRoute = L.polyline(trainArray, {color: 'green'}).addTo(mapVar);
+      var trainRoute = L.polyline(trainArray, {color: 'green'}).addTo(map);
     }
   };
   xhttp.open("GET", "Subway_Stations-2.geojson.json", true);

@@ -2,30 +2,312 @@
 <html>
 <head>
   <meta charset='utf-8'>
+  <title>Supercommuter Version 2.0</title>
   <%# <link rel="stylesheet" href="leaflet/leaflet.css"> %>
+  <link rel='stylesheet' type='text/css' href='sc-v1.css'>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
   <link rel='stylesheet' type='text/css' href='sc-v2.css'>
-
-  <title>Supercommuter Version 1.0</title>
 </head>
 <body>
-  <h1>Supercommuter Version 1.0</h1>
+  <h1>Supercommuter Version 2.0</h1>
   <div id='map'></div><!-- need to give height to the mapDiv-->
-  <button onclick='getStationData()'>Get Station Data</button>
-  <button onclick='getStationData2()'>Get Station Data 2</button>
-  <button onclick='getTrains()'>Get Trains</button>
-
+  <button onclick='drawSubway()'>Draw Subway</button>
   <div id='displayStationData'></div>
-<%# <script src='leaflet/leaflet.js'></script> %>
+  <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+  integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
 <script>
-var mapVar = L.map('map');//.setView([39.75621, -104.99404], 13);
-// mapVar.locate({setView: true, maxZoom: 16});
-// See config/initializers/leaflet.rb for adding the tile layers
-// Adds base layer - only one of these can be visible at a time
+var map = L.map('map');
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap,</a> <a href="https://www.thunderforest.com">Thunderforest</a> | contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox.streets',
     accessToken: 'pk.eyJ1IjoiZXJhdG9zdGhlbmVleiIsImEiOiJjam1nbGI4cDcwMGI2M3Fyem96MjFtMzBkIn0.Hoz2fR0h8ty9dDXbKGk8jQ'
-}).addTo(mapVar);</script>
+}).addTo(map);
+
+map.fitBounds([
+    [40.893715, -73.733368],
+    [40.546018, -74.056091]
+]);
+var oneArray = [
+  [ 40.70173 , -74.01317],
+  [ 40.70751 , -74.01378],
+  [ 40.71184 , -74.01219],
+  [ 40.71548 , -74.00927],
+  [ 40.71932 , -74.00689],
+  [ 40.72285 , -74.00628],
+  [ 40.72825 , -74.00537],
+  [ 40.73342 , -74.00291],
+  [ 40.73783 , -74.0002],
+  [ 40.74104 , -73.99787],
+  [ 40.74408 , -73.99566],
+  [ 40.74721 , -73.99337],
+  [ 40.75037 , -73.99106],
+  [ 40.75529 , -73.9875],
+  [ 40.76173 , -73.98385],
+  [ 40.76825 , -73.98193],
+  [ 40.77344 , -73.98221],
+  [ 40.77845 , -73.98197],
+  [ 40.78393 , -73.97992],
+  [ 40.78864 , -73.97622],
+  [ 40.79392 , -73.97232],
+  [ 40.79945 , -73.96838],
+  [ 40.80397 , -73.96685],
+  [ 40.80772 , -73.96411],
+  [ 40.82201 , -73.95368],
+  [ 40.82655 , -73.95036],
+  [ 40.83404 , -73.94489],
+  [ 40.84056 , -73.94013],
+  [ 40.8495 , -73.9336],
+  [ 40.81558 , -73.95837],
+  [ 40.85523 , -73.92941],
+  [ 40.86053 , -73.92554],
+  [ 40.86461 , -73.91882],
+  [ 40.86944 , -73.91528],
+  [ 40.87456 , -73.90983],
+  [ 40.87886 , -73.90483],
+  [ 40.88467 , -73.90087],
+  [ 40.88925 , -73.89858]
+];
+var sevenArray = [
+  [ 40.7596 , -73.83003],
+  [ 40.75462 , -73.84562],
+  [ 40.75173 , -73.85533],
+  [ 40.74987 , -73.8627],
+  [ 40.74914 , -73.86953],
+  [ 40.74841 , -73.87661],
+  [ 40.74766 , -73.8837],
+  [ 40.74687 , -73.89121],
+  [ 40.74632 , -73.8964],
+  [ 40.74563 , -73.90298],
+  [ 40.74415 , -73.91255],
+  [ 40.74313 , -73.91844],
+  [ 40.74378 , -73.92402],
+  [ 40.74459 , -73.931],
+  [ 40.75064 , -73.94016],
+  [ 40.74702 , -73.94526],
+  [ 40.74222 , -73.94892],
+  [ 40.74263 , -73.95358],
+  [ 40.75143 , -73.97604],
+  [ 40.75382 , -73.98196],
+  [ 40.75548 , -73.98769],
+  [ 40.75545 , -74.0022]
+
+];
+var bArray = [
+  [ 40.57771 , -73.96135], //B-Q //Brighton Beach
+  [ 40.58655 , -73.95406], //B-Q //Sheepshead Bay
+  [ 40.60864 , -73.95761], //B-Q //Kings Hwy
+  [ 40.63514 , -73.96269], //B-Q //Newkirk Ave
+  [ 40.65049 , -73.96288], //B-Q //Church Ave
+  [ 40.66163 , -73.96203], //B-Q-S //Prospect Park
+  [ 40.6771 , -73.97285], //B-Q //7th Ave
+  [ 40.68449 , -73.97678], //B-Q //Atlantic Av - Barclay's Center
+  [ 40.69065 , -73.98177], //B-D-N-Q-R //DeKalb Ave
+  [ 40.71827 , -73.99375], //B-D //Grand St
+  [ 40.7253 , -73.9962], //B-D-F-M //Broadway - Lafayette St
+  [ 40.73225 , -74.00031], //B-D-F-M //W 4th St - Washington Sq (Lower)
+  [ 40.74979 , -73.98777], //B-D-F-M //Herald Sq - 34th St
+  [ 40.75418 , -73.98459], //B-D-F-M //42nd St - Bryant Pk
+  [ 40.75864 , -73.98133], //B-D-F-M //47th-50th Sts - Rockefeller Ctr
+  [ 40.76297 , -73.9817], //B-D-E //7th Ave
+  [ 40.76825 , -73.98165], //A-B-C-D //59th St - Columbus Circle
+  [ 40.77552 , -73.97634], //A-B-C //72nd St
+  [ 40.78135 , -73.9721], //A-B-C //81st St
+  [ 40.78582 , -73.96883], //A-B-C //86th St
+  [ 40.79162 , -73.9646], //A-B-C //96th St
+  [ 40.79606 , -73.96137], //A-B-C //103rd St
+  [ 40.80058 , -73.95807], //A-B-C //Cathedral Pkwy (110th St)
+  [ 40.80506 , -73.9548], //A-B-C //116th St
+  [ 40.81107 , -73.95225], //A-B-C-D //125th St
+  [ 40.81791 , -73.94753], //A-B-C //135th St
+  [ 40.82477 , -73.94409], //A-B-C-D //145th St
+  [ 40.83013 , -73.93821], //B-D //155th St
+  [ 40.8279 , -73.92565], //B-D //161st St - Yankee Stadium
+  [ 40.83377 , -73.91843], //B-D //167th St
+  [ 40.83931 , -73.9134], //B-D //170th St
+  [ 40.8459 , -73.91014], //B-D //174th-175th Sts
+  [ 40.85041 , -73.90523], //B-D //Tremont Ave
+  [ 40.85609 , -73.90074], //B-D //182nd-183rd Sts
+  [ 40.8613 , -73.89775], //B-D //Fordham Rd
+  [ 40.86698 , -73.89351], //B-D //Kingsbridge Rd
+  [ 40.87324 , -73.88714], //B-D //Bedford Park Blvd
+]
+var qArray = [
+  [ 40.57728 , -73.98124], //D-F-N-Q //Coney Island - Stillwell Av
+  [ 40.57603 , -73.97596], //F-Q //W 8th St - NY Aquarium
+  [ 40.57631 , -73.9685], //Q //Ocean Pkwy
+  [ 40.57771 , -73.96135], //B-Q //Brighton Beach
+  [ 40.58655 , -73.95406], //B-Q //Sheepshead Bay
+  [ 40.59532 , -73.95508], //Q //Neck Rd
+  [ 40.59931 , -73.95581], //Q //Ave U
+  [ 40.60864 , -73.95761], //B-Q //Kings Hwy
+  [ 40.6174 , -73.95924], //Q //Ave M
+  [ 40.62502 , -73.96069], //Q //Ave J
+  [ 40.62921 , -73.96152], //Q //Ave H
+
+  [ 40.63514 , -73.96269], //B-Q //Newkirk Ave
+  [ 40.64094 , -73.96379], //Q //Cortelyou Rd
+  [ 40.6439 , -73.96436], //Q //Beverly Rd
+  [ 40.65049 , -73.96288], //B-Q //Church Ave
+  [ 40.65507 , -73.96145], //Q //Parkside Ave
+  [ 40.66163 , -73.96203], //B-Q-S //Prospect Park
+  [ 40.6771 , -73.97285], //B-Q //7th Ave
+  [ 40.68367 , -73.97881], //D-N-Q-R //Atlantic Av - Barclay's Center
+  [ 40.68449 , -73.97678], //B-Q //Atlantic Av - Barclay's Center
+  [ 40.69065 , -73.98177], //B-D-N-Q-R //DeKalb Ave
+
+  [ 40.71881 , -74.00105], //N-Q //Canal St
+  [ 40.72433 , -73.9977], //N-Q-R-W //Prince St
+  [ 40.73046 , -73.99251], //N-Q-R-W //8th St - NYU
+  [ 40.73587 , -73.99054], //N-Q-R-W //Union Sq - 14th St
+  [ 40.7413 , -73.98934], //N-Q-R-W //23rd St
+  [ 40.74545 , -73.9887], //N-Q-R-W //28th St
+  [ 40.74964 , -73.98794], //N-Q-R-W //Herald Sq - 34th St
+  [ 40.75461 , -73.98677], //N-Q-R-W //Times Sq - 42nd St
+  [ 40.7598 , -73.98421], //N-Q-R-W //49th St
+  [ 40.76457 , -73.98073], //N-Q-R-W //57th St
+  [ 40.76462 , -73.96609], //F-Q //Lexington Ave - 63rd St
+  [ 40.7688 , -73.95836], //Q //72nd St
+  [ 40.77786 , -73.95177], //Q //86th St
+  [ 40.78424 , -73.94707], //Q //96th St
+]
+var eArray = [
+  [ 40.71256 , -74.00974], //E %World Trade Center
+  [ 40.72082 , -74.00523], //A-C-E %Canal St - Holland Tunnel
+  [ 40.72623 , -74.00374], //A-C-E %Spring St
+  [ 40.73234 , -74.0005], //A-C-E %W 4th St - Washington Sq (Upper)
+  [ 40.74089 , -74.00169], //A-C-E %14th St
+  [ 40.74591 , -73.99804], //A-C-E %23rd St
+  [ 40.75229 , -73.99339], //A-C-E %34th St - Penn Station
+  [ 40.75731 , -73.98974], //A-C-E %42nd St - Port Authority Bus Term
+  [ 40.76246 , -73.98598], //A-C-E %50th St
+  [ 40.76297 , -73.9817], //B-D-E %7th Ave
+  [ 40.76009 , -73.97525], //E-M %5th Ave - 53rd St
+  [ 40.75747 , -73.96907], //E-M %Lexington Ave - 53rd St
+  //Queens
+  [ 40.74777 , -73.94605], //E-M %Court Sq - 23rd St
+  [ 40.74892 , -73.93714], //E-M-R %Queens Plz
+  [ 40.74654 , -73.8913], //E-F-M-R %Jackson Hts - Roosevelt Av
+  [ 40.72159 , -73.84452], //E-F-M-R %Forest Hills - 71st Av
+  [ 40.71804 , -73.83692], //E-F %75th Ave
+  [ 40.71403 , -73.83037], //E-F %Kew Gardens - Union Tpke
+  [ 40.70916 , -73.82069], //E-F %Briarwood - Van Wyck Blvd
+  [ 40.7029 , -73.81701], //E %Jamaica - Van Wyck
+  [ 40.70038 , -73.808], //E-J-Z %Sutphin Blvd - Archer Av
+  [ 40.70207 , -73.8011], //E-J-Z %Jamaica Ctr - Parsons / Archer
+
+]
+var lArray = [
+  [ 40.64665 , -73.90185], //L %Canarsie - Rockaway Pkwy
+  [ 40.65047 , -73.89955], //L %E 105th St
+  [ 40.65891 , -73.89928], //L %New Lots Ave
+  [ 40.66406 , -73.90056], //L %Livonia Ave
+  [ 40.66915 , -73.90192], //L %Sutter Ave
+  [ 40.67534 , -73.9031], //L %Atlantic Ave
+  [ 40.67846 , -73.90312], //L %Broadway Junction
+  [ 40.68286 , -73.90526], //L %Bushwick - Aberdeen
+  [ 40.68887 , -73.90396], //L %Wilson Ave
+  [ 40.69552 , -73.90393], //L %Halsey St
+  [ 40.69947 , -73.91098], //L %Myrtle - Wyckoff Aves
+  [ 40.70369 , -73.91823], //L %DeKalb Ave
+  [ 40.70661 , -73.92291], //L %Jefferson St
+  [ 40.70615 , -73.93315], //L %Morgan Ave
+  [ 40.70739 , -73.93979], //L %Montrose Ave
+  [ 40.71158 , -73.9405], //L %Grand St
+  [ 40.71458 , -73.94394], //L %Graham Ave
+  [ 40.71407 , -73.95025], //L %Lorimer St
+  [ 40.71717 , -73.95666], //L %Bedford Ave
+  //Manhattan
+  [ 40.73097 , -73.98168], //L %1st Ave
+  [ 40.73269 , -73.98575], //L %3rd Ave
+  [ 40.73476 , -73.99067], //L %Union Sq - 14th St
+  [ 40.73774 , -73.99775], //L %6th Ave
+  [ 40.73978 , -74.00258], //L %8th Ave
+]
+var fiveArray = [
+  [ 40.63284 , -73.94754], //2-5 %Brooklyn College - Flatbush Ave
+  [ 40.63999 , -73.9483], //2-5 %Newkirk Ave
+  [ 40.64512 , -73.94885], //2-5 %Beverly Rd
+  [ 40.65086 , -73.94946], //2-5 %Church Ave
+  [ 40.65666 , -73.95008], //2-5 %Winthrop St
+  [ 40.66277 , -73.95073], //2-5 %Sterling St
+  [ 40.66788 , -73.95059], //2-5 %President St
+  [ 40.67077 , -73.9581], //2-3-4-5 %Franklin Ave
+  [ 40.68442 , -73.97755], //2-3-4-5 %Atlantic Av - Barclay's Center
+  [ 40.68831 , -73.98041], //2-3-4-5 %Nevins St
+  [ 40.6924 , -73.99015], //4-5 %Borough Hall
+  //Brooklyn
+  [ 40.70491 , -74.01401], //4-5 %Bowling Green
+  [ 40.70756 , -74.01186], //4-5 %Wall St
+  [ 40.71037 , -74.00951], //4-5 %Fulton St
+  [ 40.71306 , -74.00413], //4-5-6-6 Express %Brooklyn Bridge - City Hall
+  [ 40.73467 , -73.98995], //4-5-6-6 Express %Union Sq - 14th St
+  [ 40.75181 , -73.97671], //4-5-6-6 Express %Grand Central - 42nd St
+  [ 40.76253 , -73.96797], //4-5-6-6 Express %Lexington Ave - 59th St
+  [ 40.77949 , -73.95559], //4-5-6-6 Express %86th St
+  [ 40.80414 , -73.93759], //4-5-6-6 Express %125th St
+  [ 40.81322 , -73.92985], //4-5 %138th St - Grand Concourse
+  [ 40.81833 , -73.92672], //2-5 %149th St - Grand Concourse
+  [ 40.81603 , -73.91779], //2-5 %3rd Ave - 149th St
+  [ 40.81644 , -73.9077], //2-5 %Jackson Ave
+  [ 40.81949 , -73.90178], //2-5 %Prospect Ave
+  [ 40.82214 , -73.89662], //2-5 %Intervale Ave
+  [ 40.82398 , -73.89307], //2-5 %Simpson St
+  [ 40.82999 , -73.89175], //2-5 %Freeman St
+  [ 40.8372 , -73.88769], //2-5 %174th St
+  [ 40.84021 , -73.87996], //2-5 %West Farms Sq - E Tremont Av
+  [ 40.84186 , -73.87335], //2-5 %E 180th St
+  [ 40.84877 , -73.86836], //2-5 %Bronx Park East
+  [ 40.85436 , -73.8605], //5 %Morris Park
+  [ 40.85898 , -73.85536], //5 %Pelham Pkwy
+  [ 40.86953 , -73.84638], //5 %Gun Hill Rd
+  [ 40.87866 , -73.83859], //5 %Baychester Ave
+  [ 40.8883 , -73.83083], //5 %Eastchester - Dyre Ave
+]
+var fiveTwoArray = [
+  [ 40.85719 , -73.86748], //2-5 %Pelham Pkwy
+  [ 40.86548 , -73.86723], //2-5 %Allerton Ave
+  [ 40.87126 , -73.86705], //2-5 %Burke Ave
+  [ 40.87784 , -73.86613], //2-5 %Gun Hill Rd
+  [ 40.88389 , -73.86251], //2-5 %219th St
+  [ 40.88803 , -73.86021], //2-5 %225th St
+  [ 40.89314 , -73.85736], //2-5 %233rd St
+  [ 40.89829 , -73.85432], //2-5 %Nereid Ave (238 St)
+
+]
+var aOzoneArray = [
+  [ 40.68595 , -73.8258], //A-S //Ozone Park - Lefferts Blvd
+  [ 40.68433 , -73.83216], //A-S //111th St
+  [ 40.68171 , -73.83768], //A-S //104th St
+  [ 40.68043 , -73.84385], //A-S //Rockaway Blvd
+]
+function drawSubway(){
+  var oneTrainRoute = L.polyline(oneArray, {color: 'red'}).addTo(map);
+  var sevenTrainRoute = L.polyline(sevenArray, {color: 'purple'}).addTo(map);
+  // var aRoute = L.polyline(aArray, {color: 'blue'}).addTo(map);
+  // var aOzoneRoute = L.polyline(aOzoneArray, {color: 'blue'}).addTo(map);
+  // var aFarRockawayRoute = L.polyline(aFarRockawayArray, {color: 'blue'}).addTo(map);
+  var bTrainRoute = L.polyline(bArray, {color: 'orange'}).addTo(map);
+  var qTrainRoute = L.polyline(qArray, {color: 'yellow'}).addTo(map);
+  var eTrainRoute = L.polyline(eArray, {color: 'blue'}).addTo(map);
+  var lTrainRoute = L.polyline(lArray, {color: 'grey'}).addTo(map);
+  var fiveTrainRoute = L.polyline(fiveArray, {color: 'green'}).addTo(map);
+  var fiveTwoTrainRoute = L.polyline(fiveTwoArray, {color: 'green'}).addTo(map);
+  var aOzoneTrainRoute = L.polyline(aOzoneArray, {color: 'blue'}).addTo(map);
+}
+
+var coordPopup = L.popup();
+  function onMapClick(e) {
+    coordPopup
+      .setLatLng(e.latlng)
+      .setContent("You clicked the map  " + e.latlng.toString())
+      .openOn(map);
+    }
+    map.on('click', onMapClick);
+
+</script>
 </body>
 </html>
